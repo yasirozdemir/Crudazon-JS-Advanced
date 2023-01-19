@@ -39,7 +39,6 @@ const url = "https://striveschool-api.herokuapp.com/api/product/";
 
 const parameters = new URLSearchParams(location.search);
 const ID = parameters.get("id");
-console.log(ID);
 
 // if ID = null -> you're in the back office
 // if ID has a value -> you're in the product details
@@ -50,8 +49,15 @@ window.onload = async () => {
       // editing a product
       const publishingButton = document.querySelector("#publishButton");
       publishingButton.remove();
+      const productsTable = document.querySelector("#publishedProducts table");
+      productsTable.remove();
 
-      let response = await fetch(`${url}/${ID}`);
+      let response = await fetch(`${url}/${ID}`, {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M5MzgxYWU3MzczODAwMTUzNzQzN2MiLCJpYXQiOjE2NzQxMzE0ODMsImV4cCI6MTY3NTM0MTA4M30.qBNNuqKudZ5WdbpCUHda7Hc58f7sqfu0OI6VOQIba5A",
+        },
+      });
 
       if (response.ok) {
         let { name, description, brand, imageUrl, price } =
@@ -66,6 +72,7 @@ window.onload = async () => {
       }
     } else {
       // publishing a product
+      getProducts();
       const editingButton = document.querySelector("#editButton");
       editingButton.remove();
     }
@@ -104,6 +111,7 @@ const publish = async (publishEvent) => {
       document.querySelector("#productBrand").value = "";
       document.querySelector("#productImageURL").value = "";
       document.querySelector("#productPrice").value = "";
+      getProducts();
     } else {
       console.error("Publishing error");
     }
@@ -116,10 +124,11 @@ const edit = async (editEvent) => {
   try {
     editEvent.preventDefault();
     const editedProduct = {
-      name: document.querySelector("#eventName").value,
-      description: document.querySelector("#eventDescription").value,
-      time: document.querySelector("#eventTime").value,
-      price: document.querySelector("#eventPrice").value,
+      name: document.querySelector("#productName").value,
+      description: document.querySelector("#productDescription").value,
+      brand: document.querySelector("#productBrand").value,
+      imageUrl: document.querySelector("#productImageURL").value,
+      price: document.querySelector("#productPrice").value,
     };
 
     const optionsForEditing = {
@@ -138,6 +147,72 @@ const edit = async (editEvent) => {
       console.log("Editing Successful");
     } else {
       console.error("Editing error");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getProducts = async () => {
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M5MzgxYWU3MzczODAwMTUzNzQzN2MiLCJpYXQiOjE2NzQxMzE0ODMsImV4cCI6MTY3NTM0MTA4M30.qBNNuqKudZ5WdbpCUHda7Hc58f7sqfu0OI6VOQIba5A",
+      },
+    });
+    const productsData = await response.json();
+    displayProductsToAdmin(productsData);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const publishedProductsContainer = document.querySelector(
+  "#publishedProducts tbody"
+);
+const displayProductsToAdmin = (productsArray) => {
+  productsArray.innerHTML = "";
+  const productsHTML = productsArray
+    // name, description, brand, imageUrl, price
+    .map(({ name, brand, price, _id }) => {
+      return `<tr>
+                <td>${name}</td>
+                <td>${brand}</td>
+                <td>${price}</td>
+                <td><div class="btn-group mx-auto">
+                    <a
+                      href='./backoffice.html?id=${_id}'
+                      type="button"
+                      class="btn btn-sm btn-outline-secondary"
+                    >
+                      Edit Product
+                    </a>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-secondary" onclick="deleteProduct('${_id}')"
+                    >
+                      Delete Listing
+                    </button>
+                  </div></td>
+                <td class="d-none">${_id}</td>
+              </tr>`;
+    })
+    .join("");
+  publishedProductsContainer.innerHTML = productsHTML;
+};
+
+const deleteProduct = async (productToDeleteID) => {
+  try {
+    const response = fetch(`${url}/${productToDeleteID}`, {
+      method: "DELETE",
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M5MzgxYWU3MzczODAwMTUzNzQzN2MiLCJpYXQiOjE2NzQxMzE0ODMsImV4cCI6MTY3NTM0MTA4M30.qBNNuqKudZ5WdbpCUHda7Hc58f7sqfu0OI6VOQIba5A",
+      },
+    });
+    if (response.ok) {
+      await getProducts();
     }
   } catch (error) {
     console.error(error);

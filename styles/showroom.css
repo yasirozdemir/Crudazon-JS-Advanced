@@ -1,0 +1,4 @@
+.product-card img {
+  object-fit: contain;
+  height: 15em;
+}

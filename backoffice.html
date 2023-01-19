@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="./styles/backoffice.css" />
   </head>
   <body>
+    <a href="./showroom.html">GO SHOWROOM</a>
+
     <section class="container">
       <div class="row">
         <form class="col">
@@ -91,7 +93,7 @@
             id="publishButton"
             type="button"
             class="btn btn-primary"
-            onclick="publish(event)"
+            onclick="publish(event), getProducts()"
           >
             Publish Product
           </button>
@@ -107,23 +109,21 @@
       </div>
     </section>
 
-    <!-- 
     <section id="publishedProducts" class="container-fluid">
       <div class="row">
         <div class="col">
           <table class="table table-hover table-primary">
             <thead>
-              <th scope="col">Image</th>
               <th scope="col">Name</th>
               <th scope="col">Brand</th>
               <th scope="col">Price</th>
-              <th scope="col"></th>
+              <th scope="col">Control Button</th>
             </thead>
             <tbody></tbody>
           </table>
         </div>
       </div>
-    </section> -->
+    </section>
 
     <script src="./scripts/backoffice.js"></script>
     <script
