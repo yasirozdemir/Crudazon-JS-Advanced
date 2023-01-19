@@ -1,40 +1,5 @@
 // token => eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M5MzgxYWU3MzczODAwMTUzNzQzN2MiLCJpYXQiOjE2NzQxMzE0ODMsImV4cCI6MTY3NTM0MTA4M30.qBNNuqKudZ5WdbpCUHda7Hc58f7sqfu0OI6VOQIba5A
 
-// PRODUCT MODEL
-//{
-//   "_id": "5d318e1a8541744830bef139", //SERVER GENERATED
-//   "name": "app test 1",  //REQUIRED
-//   "description": "something longer", //REQUIRED
-//   "brand": "nokia", //REQUIRED
-//   "imageUrl": "https://drop.ndtv.com/TECH/product_database/images/2152017124957PM_635_nokia_3310.jpeg?downsize=*:420&output-quality=80", //REQUIRED
-//   "price": 100, //REQUIRED
-//   "userId": "admin", //SERVER GENERATED
-//   "createdAt": "2019-07-19T09:32:10.535Z", //SERVER GENERATED
-//   "updatedAt": "2019-07-19T09:32:10.535Z", //SERVER GENERATED
-//   "__v": 0 //SERVER GENERATED
-// }
-
-// Card Example
-/* <div class="d-flex card mb-4 shadow-sm">
-  <img class="card-img-top w-100" src="" alt="product image" />
-  <div class="card-body p-2">
-    <div class="d-flex flex-column justify-content-between align-items-center">
-      <strong class="card-title text-center">Product Name</strong>
-      <p class="text-info">Brand</p>
-      <p class="text-secondary">Description</p>
-      <p class="text-info">Price</p>
-      <div class="btn-group mx-auto">
-        <button type="button" class="btn btn-sm btn-outline-secondary">
-          Edit Product
-        </button>
-        <button type="button" class="btn btn-sm btn-outline-secondary">
-          Delete Listing
-        </button>
-      </div>
-    </div>
-  </div>
-</div> */
-
 const url = "https://striveschool-api.herokuapp.com/api/product/";
 
 const parameters = new URLSearchParams(location.search);
@@ -175,12 +140,12 @@ const displayProductsToAdmin = (productsArray) => {
   productsArray.innerHTML = "";
   const productsHTML = productsArray
     // name, description, brand, imageUrl, price
-    .map(({ name, brand, price, _id }) => {
+    .map(({ name, brand, _id, imageUrl }) => {
       return `<tr>
-                <td>${name}</td>
-                <td>${brand}</td>
-                <td>${price}</td>
-                <td><div class="btn-group mx-auto">
+                <td class="w-25"><img src="${imageUrl}" style="object-fit: contain; width:45px; height: 45px"></td>
+                <td class="w-25">${name}</td>
+                <td class="w-25">${brand}</td>
+                <td class="w-25"><div class="btn-group mx-auto">
                     <a
                       href='./backoffice.html?id=${_id}'
                       type="button"

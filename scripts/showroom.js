@@ -31,7 +31,7 @@ const displayProducts = (productsArray) => {
     // name, description, brand, imageUrl, price
     .map(({ name, description, brand, imageUrl, price, _id }) => {
       return `<div class="product-card d-flex col-3 card mb-4 shadow-sm">
-                <img class="card-img-top w-100" src="${imageUrl}" alt="product image" />
+                <div class="m-1"><img class="card-img-top w-100" src="${imageUrl}" alt="product image" /></div>
                 <div class="card-body p-2">
                 <div class="d-flex flex-column justify-content-between align-items-center">
                     <strong class="card-title text-center">${name}</strong>

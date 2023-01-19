@@ -1,4 +1,5 @@
 .product-card img {
   object-fit: contain;
   height: 15em;
+  background-color: rgba(81, 122, 122, 0.548);
 }
