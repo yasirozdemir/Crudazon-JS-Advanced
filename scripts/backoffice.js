@@ -6,7 +6,7 @@ const parameters = new URLSearchParams(location.search);
 const ID = parameters.get("id");
 
 // if ID = null -> you're in the back office
-// if ID has a value -> you're in the product details
+// if ID has a value -> you're in the product details (editing)
 
 window.onload = async () => {
   try {
