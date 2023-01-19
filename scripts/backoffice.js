@@ -40,6 +40,8 @@ window.onload = async () => {
       getProducts();
       const editingButton = document.querySelector("#editButton");
       editingButton.remove();
+      const backButton = document.querySelector("#backButton");
+      backButton.remove();
     }
   } catch (error) {
     // todo handle error
@@ -119,6 +121,7 @@ const edit = async (editEvent) => {
 };
 
 const getProducts = async () => {
+  console.log("getting products");
   try {
     const response = await fetch(url, {
       headers: {
@@ -143,8 +146,8 @@ const displayProductsToAdmin = (productsArray) => {
     .map(({ name, brand, _id, imageUrl }) => {
       return `<tr>
                 <td class="w-25"><img src="${imageUrl}" style="object-fit: contain; width:45px; height: 45px"></td>
-                <td class="w-25">${name}</td>
-                <td class="w-25">${brand}</td>
+                <td class="w-25">${name}, ${brand}</td>
+                <td class="w-25">${_id}</td>
                 <td class="w-25"><div class="btn-group mx-auto">
                     <a
                       href='./backoffice.html?id=${_id}'
@@ -159,8 +162,8 @@ const displayProductsToAdmin = (productsArray) => {
                     >
                       Delete Listing
                     </button>
-                  </div></td>
-                <td class="d-none">${_id}</td>
+                  </div>
+                </td>
               </tr>`;
     })
     .join("");
@@ -175,10 +178,13 @@ const deleteProduct = async (productToDeleteID) => {
         Authorization:
           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M5MzgxYWU3MzczODAwMTUzNzQzN2MiLCJpYXQiOjE2NzQxMzE0ODMsImV4cCI6MTY3NTM0MTA4M30.qBNNuqKudZ5WdbpCUHda7Hc58f7sqfu0OI6VOQIba5A",
       },
+    }).then((response) => {
+      if (response.ok) {
+        getProducts();
+      } else {
+        console.error(error);
+      }
     });
-    if (response.ok) {
-      await getProducts();
-    }
   } catch (error) {
     console.error(error);
   }
